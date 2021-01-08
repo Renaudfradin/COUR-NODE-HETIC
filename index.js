@@ -48,7 +48,8 @@ app.use(express.json()); //recupere une reponse en json
 app.get('/', (req , res) =>{
     //console.log("Request",req);
     return res.status(200).json({
-        hello:'world'
+        hello:'world',
+        statusCode: 200,
     });
 });
 
@@ -61,6 +62,7 @@ app.post('/login',(req,res)=>{
         }
     });
     return res.status(201).json({
+        statusCode: 201,
         hello:'worldpost'
     });
 });
@@ -71,15 +73,21 @@ app.get('/users', async (req, res) => {
 
     let users = [];
     try {
-        users = await knex.select().from('users');
+        users = await knex.select(['id','fist_name','last_name','email','username','created_at']).from('users');
     } catch (error) {
         console.log('An error occured: ', error);
         return res.status(500).json({
-            bad: 'very bad'
+            statusCode: 500,
+            message: 'internal serveur error',
+            errors:[{
+                message:'failed to query database',
+            }],
         });
     }
-
+    console.log(users);
     return res.status(200).json({
+        statusCode: 200,
+        message: 'succcesful',
         data: users,
     });
 });
