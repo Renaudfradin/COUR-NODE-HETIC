@@ -28,7 +28,10 @@ const app = express();
 var Analytics = require('analytics-node');
 var analytics = new Analytics('FNHMiZJOqi3hBERgUFhiG2RHbPCrY7lU');
 
-app.use(express.json());
+//middleware peut venir avant ou aprés l'execution du handler
+//Handler /get /post
+
+app.use(express.json()); //recupere une reponse en json
 
 app.get('/', (req , res) =>{
     //console.log("Request",req);
@@ -39,11 +42,10 @@ app.get('/', (req , res) =>{
 
 app.post('/login',(req,res)=>{
     analytics.identify({
-        userId:'f4ca124298',
+        userId:req.body.userId,
         traits: {
-          name: 'Michael Bolton',
-          email: 'mbolton@example.com',
-          createdAt: new Date('2014-06-14T02:00:19.467Z')
+          name: req.body.name,
+          email: req.body.email,
         }
     });
     return res.status(201).json({
