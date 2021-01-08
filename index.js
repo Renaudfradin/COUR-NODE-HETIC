@@ -28,6 +28,7 @@ const app = express();
 var Analytics = require('analytics-node');
 var analytics = new Analytics('FNHMiZJOqi3hBERgUFhiG2RHbPCrY7lU');
 
+app.use(express.json());
 
 app.get('/', (req , res) =>{
     //console.log("Request",req);
@@ -48,7 +49,9 @@ app.post('/login',(req,res)=>{
     return res.status(201).json({
         hello:'worldpost'
     });
-})
+});
+
+
 app.listen(3000, () =>{
     console.log("start on 3000");
-})
+});
